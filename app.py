@@ -79,8 +79,8 @@ def home():
                 return redirect(url_for('home'))
     return render_template('index.html')
 
-@app.route('/votes')
-def votes():
+@app.route('/count')
+def count():
     return render_template('votes.html')
 
 @app.route('/data')
