@@ -12,9 +12,7 @@ def get_db():
     again.
     """
     if "db" not in g:
-        g.db = sqlite3.connect(
-            current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
-        )
+        g.db = sqlite3.connect(current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES)
         g.db.row_factory = sqlite3.Row
 
     return g.db
@@ -52,3 +50,16 @@ def init_app(app):
     """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+def insert(tableName, arguments, values):
+    # These arugments should be a list of strings
+    # Basically this function runs this command with but with the custom values
+    #       db.execute("INSERT INTO candidate (name, bio, img) VALUES (?, ?, ?)", (name, bio, image),)
+
+    db = get_db()
+    dbCommand = "INSERT INTO " + tableName + " "
+    # fancy population of string
+    dbCommand += ("(" + ', '.join(['%s']*len(arguments)) + ") ") % tuple(arguments)
+    dbCommand += "VALUES" + " (" + ", ".join("?"*len(arguments)) + ")"
+    db.execute(dbCommand, values, )
+    db.commit()

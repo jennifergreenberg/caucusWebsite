@@ -4,7 +4,8 @@
 #                                                                                                                                         #
 ###########################################################################################################################################
 
-from flask import Flask, render_template, url_for, g, redirect, request
+from flask import Flask, render_template, url_for, g, redirect, request, flash
+#import toastr as toastr
 app = Flask(__name__)
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
@@ -21,7 +22,7 @@ app.config.from_mapping(
     SECRET_KEY="dev",
     DATABASE=os.path.join(app.instance_path, "myData.sqlite"),
 )
-from db import init_app, get_db
+from db import init_app, get_db, insert
 init_app(app)
 
 
@@ -34,6 +35,7 @@ init_app(app)
 
 @app.route('/', methods=("GET", "POST"))
 def home():
+    # Add Candidate Form
     if request.method == "POST":
         if "insert" in request.form:
             name = request.form["candName"]
@@ -41,24 +43,24 @@ def home():
             image = request.form["filename"]
             error = None
 
-            if not name:
+            if not name or not bio or not image:
                 error = "Missing Information"
 
             if error is not None:
                 flash(error)
             else:
-                db = get_db()
-                db.execute (
-                    "INSERT INTO candidate (name, bio, img) VALUES (?, ?, ?)", (name, bio, image),    
-                )
-                db.commit()
-                return redirect(url_for('home'))
+                insert("candidate", ["name", "bio", "img"], [name, bio, image])
+                return render_template('index.html', alert="insert")
+
+        # Remove a Candidate Form
         elif "delete" in request.form:
             db = get_db()
             candName = request.form["candName"]
             db.execute("DELETE FROM candidate WHERE name=(?)", (candName,))
             db.commit()
-            return redirect(url_for('home'))
+            return render_template('index.html', alert="delete")
+
+        # Seetings Form
         elif "settings" in request.form:
             db = get_db()
             realign = request.form["realign"]
@@ -71,23 +73,31 @@ def home():
             if error is not None:
                 flash(error)
             else:
-                db = get_db()
-                db.execute (
-                    "INSERT INTO settings (realign, numPeople) VALUES (?, ?)", (realign, numPeople),    
-                )
-                db.commit()
-                return redirect(url_for('home'))
+                insert("settings", ["realign", "numPeople"], [realign, numPeople])
+                return render_template('index.html', alert="settings")
+
+    # Main Page
     return render_template('index.html')
 
-@app.route('/count')
+
+@app.route('/count', methods=("GET", "POST"))
 def count():
+    if request.method == "POST":
+        db = get_db()
+        numOfVotes = request.form['numVotes']
+        name = request.form['Candname']
+        db.execute(
+                "UPDATE candidate WHERE name=(?) SET numVotes=(?)", (name, numOfVotes),
+            )
     return render_template('votes.html')
+
 
 @app.route('/data')
 def data():
     return render_template('data.html')
 
-local = False
+
+local = True
 if __name__ == '__main__':
     if local:
         import os

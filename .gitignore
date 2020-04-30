@@ -1,6 +1,7 @@
 env
 NewCaucus.sln
 NewCaucus.pyproj
+myData.sqlite
 
 
 ## Ignore Visual Studio temporary files, build results, and
