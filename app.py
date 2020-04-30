@@ -97,7 +97,7 @@ def data():
     return render_template('data.html')
 
 
-local = True
+local = False
 if __name__ == '__main__':
     if local:
         import os
