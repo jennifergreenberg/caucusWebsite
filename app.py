@@ -23,7 +23,11 @@ app.config.from_mapping(
     DATABASE=os.path.join(app.instance_path, "myData.sqlite"),
 )
 from db import init_app, get_db, insert
+from dataVisualBuilder import createGraph
+
+# App setup
 init_app(app)
+
 
 
 
@@ -33,6 +37,7 @@ init_app(app)
 #                                                                                                                                         #
 ###########################################################################################################################################
 
+# Home Page
 @app.route('/', methods=("GET", "POST"))
 def home():
     # Add Candidate Form
@@ -80,6 +85,7 @@ def home():
     return render_template('index.html')
 
 
+# Count Page
 @app.route('/count', methods=("GET", "POST"))
 def count():
     if request.method == "POST":
@@ -92,12 +98,17 @@ def count():
     return render_template('votes.html')
 
 
+# Data Page
 @app.route('/data')
 def data():
-    return render_template('data.html')
+    for filename in os.listdir('static/images'):
+        if filename.startswith('graph'):
+            os.remove('static/images/' + filename)
+    filename = createGraph()
+    return render_template('data.html', graphPath=filename)
 
 
-local = False
+local = True
 if __name__ == '__main__':
     if local:
         import os
