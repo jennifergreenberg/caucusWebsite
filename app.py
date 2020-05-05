@@ -4,7 +4,7 @@
 #                                                                                                                                         #
 ###########################################################################################################################################
 
-from flask import Flask, render_template, url_for, g, redirect, request, flash
+from flask import Flask, render_template, url_for, g, redirect, request, flash, session, Blueprint
 #import toastr as toastr
 app = Flask(__name__)
 
@@ -22,11 +22,23 @@ app.config.from_mapping(
     SECRET_KEY="dev",
     DATABASE=os.path.join(app.instance_path, "myData.sqlite"),
 )
-from db import init_app, get_db, insert
+from db import init_app, get_db, insert, remove, init_app
 from dataVisualBuilder import createGraph
+init_app(app) # initilize the database
 
 # App setup
 init_app(app)
+
+
+###########################################################################################################################################
+#                                                                                                                                         #
+#                                                           Login Features                                                                #
+#                                                                                                                                         #
+###########################################################################################################################################
+
+import login
+from login import login_required
+app.register_blueprint(login.bp)
 
 
 
@@ -38,8 +50,16 @@ init_app(app)
 ###########################################################################################################################################
 
 # Home Page
-@app.route('/', methods=("GET", "POST"))
+@app.route('/')
 def home():
+    
+    return render_template('home.html')
+
+
+# Settings Page
+@app.route('/settings', methods=("GET", "POST"))
+@login_required
+def settings():
     # Add Candidate Form
     if request.method == "POST":
         if "insert" in request.form:
@@ -59,10 +79,8 @@ def home():
 
         # Remove a Candidate Form
         elif "delete" in request.form:
-            db = get_db()
             candName = request.form["candName"]
-            db.execute("DELETE FROM candidate WHERE name=(?)", (candName,))
-            db.commit()
+            remove("candidate", "name", candName)
             return render_template('index.html', alert="delete")
 
         # Seetings Form
@@ -84,7 +102,6 @@ def home():
     # Main Page
     return render_template('index.html')
 
-
 # Count Page
 @app.route('/count', methods=("GET", "POST"))
 def count():
@@ -100,6 +117,7 @@ def count():
 
 # Data Page
 @app.route('/data')
+@login_required
 def data():
     for filename in os.listdir('static/images'):
         if filename.startswith('graph'):

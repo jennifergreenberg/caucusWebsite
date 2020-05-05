@@ -62,3 +62,9 @@ form {
 	width: 300px;
 	position: relative;
 }
+
+
+.content {
+	width: 58%;
+	margin: auto;
+}

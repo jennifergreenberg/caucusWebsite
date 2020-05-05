@@ -22,7 +22,6 @@
 </head>
 
 <body style="background:#D3D3D3">
-
     {% if alert == "delete" %}
     <script>
         $(document).ready(function () {
@@ -52,14 +51,21 @@
                 New Caucus
             </a>
             <ul class="navbar nav">
+                {% if session['user_type'] == 'admin' %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('home') }}">Setup</a>
+                    <a class="nav-link" href="{{ url_for('settings') }}">Setup</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('count') }}">Count</a>
                 </li>
+                {% if session['user_type'] != 'volunteer' %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('data') }}">Data</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 </li>
             </ul>
         </nav>

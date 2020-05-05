@@ -63,3 +63,9 @@ def insert(tableName, arguments, values):
     dbCommand += "VALUES" + " (" + ", ".join("?"*len(arguments)) + ")"
     db.execute(dbCommand, values, )
     db.commit()
+
+def remove(tableName, columnName, item):
+    db = get_db()
+    dbCommand = "DELETE FROM " + tableName + " WHERE " + columnName +"=(?)"
+    db.execute(dbCommand, (item,))
+    db.commit()
