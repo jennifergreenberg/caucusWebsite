@@ -35,6 +35,7 @@ def createGraph():
     ax.set_title('Votes per Candidate')
     ax.set_xticks(x)
     ax.set_xticklabels(names)
+    ax.set_ylim(ymin=0)
 
     # populate the rectangles with correct information
     for rect in rects:
