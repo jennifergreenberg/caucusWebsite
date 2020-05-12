@@ -19,7 +19,7 @@
                 </a>
                 <ul class="navbar nav">
                     {% if session['user_type'] == 'admin' %}
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('settings') }}">Setup</a>
                     </li>
                     {% endif %}
@@ -27,7 +27,7 @@
                         <a class="nav-link" href="{{ url_for('count') }}">Count</a>
                     </li>
                     {% if session['user_type'] != 'volunteer' %}
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{{ url_for('data') }}">Data</a>
                     </li>
                     {% endif %}
@@ -40,7 +40,13 @@
 
         <div class="textbox" style="border:#fff; width:420px; height:500px; left: 290px; top:50px; overflow-y: auto;">
             <div class="formheader" style="position:relative; width:420px; right:16px; bottom:20px;">Candidates</div>
-            candidates are listed here.
+                  <ol>
+                    {% if Candidates is iterable() %}
+                    {% for item in Candidates %}
+                        <li><b>{{ item.name }}</b></li>
+                    {% endfor %}
+                  </ol>
+                  {% endif %}
         </div>
 
         <div class="textbox" style="border:#fff; width:420px; height:500px; left: 990px; bottom:450px;">

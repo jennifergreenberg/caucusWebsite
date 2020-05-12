@@ -26,11 +26,11 @@
             </a>
             <ul class="navbar nav">
                 {% if session['user_type'] == 'admin' %}
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('settings') }}">Setup</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('count') }}">Count</a>
                 </li>
                 {% if session['user_type'] != 'volunteer' %}
@@ -45,33 +45,22 @@
         </nav>
     </div>
 
-    <div class="container">
-        <!--Ideally each candidate should be filled into the form automatically-->
-        <form action="#">
-            <div class="formheader" style="width:450px; position:relative; right:19px; bottom:16px;">Vote One</div>
-            <img src="https://i.imgur.com/yXvE8B1.png" alt="profile picture" style="width:100px;height:100px;">
-            <div class="textbox" style="bottom:82px; left:110px;">{Candidate Name} <br> {candidate bio/whatever was inputted about the candidate here}</div>
-            <label class="required" for="canVote" style="position:relative; bottom:80px;">Input number of votes that {candidate} recieved in this round.</label>
-
-            <input type="number" class="form-control" name="canVote" id="canVote" style="position:relative; bottom:80px;" required>
-            <br>
-            <input type="submit" value="Confirm" style="position:relative" ">
-        </form>
-    </div>
-
-    <div class="container">
-        <!--Ideally each candidate should be filled into the form automatically-->
-        <form action="#" style="left:470px; bottom: 455px;">
-            <div class="formheader" style="width:450px; position:relative; right:19px; bottom:16px;">Vote Two</div>
-            <img src="https://i.imgur.com/yXvE8B1.png" alt="profile picture" style="width:100px;height:100px;">
-            <div class="textbox" style="bottom:82px; left:110px;">{Candidate Name} <br> {candidate bio/whatever was inputted about the candidate here}</div>
-            <label class="required" for="canVote" style="position:relative; bottom:80px;">Input number of votes that {candidate} recieved in this round.</label>
-
-            <input type="number" class="form-control" name="canVote2" id="canVote2" style="position:relative; bottom:80px;" required>
-            <br>
-            <input type="submit" value="Confirm" style="position:relative" ">
-        </form>
-    </div>
+    	<!--Candidate Vote Box-->
+		<div class="box" style="margin-left:17%;">
+	    {% if Candidates is iterable() %}
+		{% for item in Candidates %}
+		<form action="#" style="height:350px;"> 
+		  <div class="formheader" id="CandName" name="CandName" style="width:450px; position:relative; right:18px; bottom:17px;">{{ item.name }}</div>
+		  <img src="{{ item.picture }}" alt="img" style="width:100px;height:100px;"> 
+		  <div class="textbox" style="position:relative; bottom:82px; left:110px; height: 100px; overflow-y: scroll; width:300px;">{{ item.bio }}</div>
+		  <label class="required" for="canVote" style="position: relative; top:-70px;">Input number of votes that {{ item.name }} recieved in this round.</label> 
+		  <input type="number" class="form-control" name="numOfVotes" id="numOfVotes" style="position:relative; top:-70px;" required>
+		  <input type="submit" value="Confirm" style="position:relative; bottom:60px;">
+			</form>
+		{% endfor %}
+	    {% endif %}
+		</div>
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
