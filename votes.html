@@ -33,33 +33,18 @@
         </nav>
     </div>
 
-    <div class="container">
-        <!--Ideally each candidate should be filled into the form automatically-->
-        <form action="#">
-            <div class="formheader" style="width:450px; position:relative; right:19px; bottom:16px;">Vote One</div>
-            <img src="https://i.imgur.com/yXvE8B1.png" alt="profile picture" style="width:100px;height:100px;">
-            <div class="textbox" style="bottom:82px; left:110px;">{Candidate Name} <br> {candidate bio/whatever was inputted about the candidate here}</div>
-            <label class="required" for="canVote" style="position:relative; bottom:80px;">Input number of votes that {candidate} recieved in this round.</label>
-
-            <input type="number" class="form-control" name="canVote" id="canVote" style="position:relative; bottom:80px;" required>
-            <br>
-            <input type="submit" value="Confirm" style="position:relative" ">
-        </form>
-    </div>
-
-    <div class="container">
-        <!--Ideally each candidate should be filled into the form automatically-->
-        <form action="#" style="left:470px; bottom: 455px;">
-            <div class="formheader" style="width:450px; position:relative; right:19px; bottom:16px;">Vote Two</div>
-            <img src="https://i.imgur.com/yXvE8B1.png" alt="profile picture" style="width:100px;height:100px;">
-            <div class="textbox" style="bottom:82px; left:110px;">{Candidate Name} <br> {candidate bio/whatever was inputted about the candidate here}</div>
-            <label class="required" for="canVote" style="position:relative; bottom:80px;">Input number of votes that {candidate} recieved in this round.</label>
-
-            <input type="number" class="form-control" name="canVote2" id="canVote2" style="position:relative; bottom:80px;" required>
-            <br>
-            <input type="submit" value="Confirm" style="position:relative" ">
-        </form>
-    </div>
+    <!--Candidate Vote Box-->
+          <div class="container">
+            <form action="#" style="height:350px;"> 
+              <div class="formheader" style="width:450px; position:relative; right:19px; bottom:16px;">{Candidate Name}</div>
+              <img src="https://i.imgur.com/yXvE8B1.png" alt="profile picture" style="width:100px;height:100px;"> 
+              <div class="textbox" style="bottom:82px; left:110px;">{candidate bio/whatever was inputted about the candidate here}</div>
+              <label class="required" for="canVote" style="position:relative; bottom:80px;">Input number of votes that {candidate} recieved in this round.</label> 
+              <input type="number" class="form-control" name="canVote" id="canVote" style="position:relative; bottom:80px;" required>
+              <input type="submit" value="Confirm" style="position:relative; bottom:60px;">
+            </form>
+          </div>
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
